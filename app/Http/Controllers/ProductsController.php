@@ -18,7 +18,12 @@ class ProductsController extends Controller
     } */
     public function index()
     {
-        //
+        $product = Products::all();
+        return response()->json([
+            'status' => 'success',
+            'status_code' => 200,
+            'data' => $product
+        ]);
     }
 
     /**
@@ -68,7 +73,12 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Products::find($id);
+        return response()->json([
+            'status' => 'success',
+            'status_code' => 200,
+            'data' => $product
+        ]);
     }
 
     /**
@@ -79,7 +89,12 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Products::find($id);
+        return response()->json([
+            'status' => 'success',
+            'status_code' => 200,
+            'data' => $product
+        ]);
     }
 
     /**
@@ -97,7 +112,7 @@ class ProductsController extends Controller
         $product->description = $request->description;
         $product->quantity = $request->quantity;
 
-        if (auth()->user()->products()->save($product)) {
+        if ($product->save()) {
 
             return response()->json([
                 'status' => 'success',
@@ -121,6 +136,28 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Products::find($id);
+        if (!$product) {
+
+            return response()->json([
+                'status' => 'fail',
+                'status_code' => 404,
+                'message' => 'Product not found'
+            ]);
+        }
+
+        if ($product->delete()) {
+            return response()->json([
+                'status' => 'success',
+                'status_code' => 200,
+                'message' => 'Deleted Successfully!'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'status_code' => 500,
+                'message' => 'Error Occured'
+            ]);
+        }
     }
 }
