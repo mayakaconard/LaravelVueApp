@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +20,10 @@ use Illuminate\Support\Facades\Route;
 });
  */
 
-Route::post('register', 'PassportAuthController@register');
-Route::post('login', 'PassportAuthController@login');
+Route::post('register', 'PassportAuthController@register')->name('register');
+Route::post('login', 'PassportAuthController@login')->name('login');
+Route::get('login', 'PassportAuthController@login')->name('login');
 
 Route::middleware('auth:api')->group(function () {
-    Route::resource('posts', PostController::class);
+    Route::resource('products', 'ProductsController');
 });
