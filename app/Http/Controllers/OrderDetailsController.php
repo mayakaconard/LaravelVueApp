@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Products;
+use App\OrderDetails;
 
-class ProductsController extends Controller
+class OrderDetailsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +14,11 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $product = Products::all();
+        $orderdet = OrderDetails::with(['products', 'orders'])->get();
         return response()->json([
             'status' => 'success',
             'status_code' => 200,
-            'data' => $product
+            'data' => $orderdet
         ]);
     }
 
@@ -40,17 +40,15 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new Products();
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->quantity = $request->quantity;
-
-        if ($product->save()) {
+        $orderdet = new OrderDetails();
+        $orderdet->order_id = $request->order_id;
+        $orderdet->product_id = $request->product_id;
+        if ($orderdet->save()) {
 
             return response()->json([
                 'status' => 'success',
                 'status_code' => 200,
-                'message' => 'Product created Successfully'
+                'message' => 'Order Details Saved Successfully'
             ]);
         } else {
             return response()->json([
@@ -69,11 +67,11 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = Products::find($id);
+        $orderdet = OrderDetails::with(['products', 'orders'])->find($id);
         return response()->json([
             'status' => 'success',
             'status_code' => 200,
-            'data' => $product
+            'data' => $orderdet
         ]);
     }
 
@@ -85,11 +83,11 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $product = Products::find($id);
+        $orderdet = OrderDetails::with(['products', 'orders'])->find($id);
         return response()->json([
             'status' => 'success',
             'status_code' => 200,
-            'data' => $product
+            'data' => $orderdet
         ]);
     }
 
@@ -102,18 +100,15 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Products::find($id);
-
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->quantity = $request->quantity;
-
-        if ($product->save()) {
+        $orderdet = OrderDetails::with(['products', 'orders'])->find($id);
+        $orderdet->order_id = $request->order_id;
+        $orderdet->product_id = $request->product_id;
+        if ($orderdet->update()) {
 
             return response()->json([
                 'status' => 'success',
                 'status_code' => 200,
-                'message' => 'Product created Successfully'
+                'message' => 'Order Details updated Successfully'
             ]);
         } else {
             return response()->json([
@@ -132,17 +127,17 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        $product = Products::find($id);
-        if (!$product) {
+        $orderdet = OrderDetails::with(['products', 'orders'])->find($id);
+        if (!$orderdet) {
 
             return response()->json([
                 'status' => 'fail',
                 'status_code' => 404,
-                'message' => 'Product not found'
+                'message' => 'Supplier not found'
             ]);
         }
 
-        if ($product->delete()) {
+        if ($orderdet->delete()) {
             return response()->json([
                 'status' => 'success',
                 'status_code' => 200,

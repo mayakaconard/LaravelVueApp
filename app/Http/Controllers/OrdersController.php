@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Products;
+use App\Orders;
 
-class ProductsController extends Controller
+class OrdersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +14,11 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $product = Products::all();
+        $order = Orders::all();
         return response()->json([
             'status' => 'success',
             'status_code' => 200,
-            'data' => $product
+            'data' => $order
         ]);
     }
 
@@ -40,17 +40,14 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new Products();
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->quantity = $request->quantity;
-
-        if ($product->save()) {
+        $order = new Orders();
+        $order->order_number = $request->order_number;
+        if ($order->save()) {
 
             return response()->json([
                 'status' => 'success',
                 'status_code' => 200,
-                'message' => 'Product created Successfully'
+                'message' => 'Order created Successfully'
             ]);
         } else {
             return response()->json([
@@ -69,11 +66,11 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = Products::find($id);
+        $order = Orders::find($id);
         return response()->json([
             'status' => 'success',
             'status_code' => 200,
-            'data' => $product
+            'data' => $order
         ]);
     }
 
@@ -85,11 +82,11 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $product = Products::find($id);
+        $order = Orders::find($id);
         return response()->json([
             'status' => 'success',
             'status_code' => 200,
-            'data' => $product
+            'data' => $order
         ]);
     }
 
@@ -102,23 +99,19 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Products::find($id);
-
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->quantity = $request->quantity;
-
-        if ($product->save()) {
+        $order = Orders::find($id);
+        $order->order_number = $request->order_number;
+        if ($order->update()) {
 
             return response()->json([
                 'status' => 'success',
                 'status_code' => 200,
-                'message' => 'Product created Successfully'
+                'message' => 'Order Updated Successfully'
             ]);
         } else {
             return response()->json([
                 'status' => 'fail',
-                'status_code' => 500,
+                'status_code' => 424,
                 'message' => 'Error Occured'
             ]);
         }
@@ -132,17 +125,17 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        $product = Products::find($id);
-        if (!$product) {
+        $order = Orders::find($id);
+        if (!$order) {
 
             return response()->json([
                 'status' => 'fail',
                 'status_code' => 404,
-                'message' => 'Product not found'
+                'message' => 'Order not found'
             ]);
         }
 
-        if ($product->delete()) {
+        if ($order->delete()) {
             return response()->json([
                 'status' => 'success',
                 'status_code' => 200,

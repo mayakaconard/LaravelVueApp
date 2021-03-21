@@ -10,11 +10,11 @@ class SupplierProducts extends Model
 {
     public function products()
     {
-        return $this->hasMany(Products::class);
+        return $this->hasMany(Products::class, 'id');
     }
 
     public function suppliers()
     {
-        return $this->hasMany(Suppliers::class);
+        return $this->hasMany(Suppliers::class, 'id');
     }
 }

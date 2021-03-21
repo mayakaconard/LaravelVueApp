@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\SupplierProducts;
 use Illuminate\Http\Request;
-use App\Products;
+use App\Suppliers;
 
-class ProductsController extends Controller
+class SuppliersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +15,11 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $product = Products::all();
+        $supplier = Suppliers::all();
         return response()->json([
             'status' => 'success',
             'status_code' => 200,
-            'data' => $product
+            'data' => $supplier
         ]);
     }
 
@@ -40,17 +41,14 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new Products();
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->quantity = $request->quantity;
-
-        if ($product->save()) {
+        $supplier = new Suppliers();
+        $supplier->name = $request->name;
+        if ($supplier->save()) {
 
             return response()->json([
                 'status' => 'success',
                 'status_code' => 200,
-                'message' => 'Product created Successfully'
+                'message' => 'Supplier created Successfully'
             ]);
         } else {
             return response()->json([
@@ -69,11 +67,11 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = Products::find($id);
+        $supplier = Suppliers::find($id);
         return response()->json([
             'status' => 'success',
             'status_code' => 200,
-            'data' => $product
+            'data' => $supplier
         ]);
     }
 
@@ -85,11 +83,11 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $product = Products::find($id);
+        $supplier = Suppliers::find($id);
         return response()->json([
             'status' => 'success',
             'status_code' => 200,
-            'data' => $product
+            'data' => $supplier
         ]);
     }
 
@@ -102,18 +100,14 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Products::find($id);
-
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->quantity = $request->quantity;
-
-        if ($product->save()) {
+        $supplier = Suppliers::find($id);
+        $supplier->name = $request->name;
+        if ($supplier->update()) {
 
             return response()->json([
                 'status' => 'success',
                 'status_code' => 200,
-                'message' => 'Product created Successfully'
+                'message' => 'Supplier Updated Successfully'
             ]);
         } else {
             return response()->json([
@@ -132,17 +126,17 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        $product = Products::find($id);
-        if (!$product) {
+        $supplier = Suppliers::find($id);
+        if (!$supplier) {
 
             return response()->json([
                 'status' => 'fail',
                 'status_code' => 404,
-                'message' => 'Product not found'
+                'message' => 'Supplier not found'
             ]);
         }
 
-        if ($product->delete()) {
+        if ($supplier->delete()) {
             return response()->json([
                 'status' => 'success',
                 'status_code' => 200,
